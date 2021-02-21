@@ -1,0 +1,52 @@
+.container {
+  width: 100%;
+  min-height: 100vh;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.box {
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.selectNumber {
+  max-width: 500px;
+  min-width: 280px;
+  color: #f05c5c;
+}
+
+.selectNumber:hover div {
+  border-color: transparent;
+}
+
+.selectNumber div {
+  border-color: transparent;
+}
+
+.TagCloud {
+  margin-top: 20px;
+  max-width: 500px;
+  text-align: center;
+}
+/*# sourceMappingURL=addproject.module.css.map */

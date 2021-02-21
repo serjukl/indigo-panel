@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": ";AAAA,AAAA,UAAU,CAAC;EACP,KAAK,EAAE,IAAI;EACX,MAAM,EAAE,MAAM;CAKe;;AAPjC,AAGI,UAHM,CAGN,CAAC,CAAC;EACE,KAAK,EAAE,EAAE,CAAA,OAAO;EAChB,UAAU,EAAE,MAAM;CAEK;;AAP/B,AAMQ,UANE,CAGN,CAAC,CAGG,IAAI,CAAC;EACD,KAAK,EAAE,OAAO;CAAG",
+    "sources": [
+        "FormName.module.sass"
+    ],
+    "names": [],
+    "file": "FormName.module.css"
+}

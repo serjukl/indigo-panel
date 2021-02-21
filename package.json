@@ -1,0 +1,36 @@
+{
+  "name": "indigo-admin",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "firebase": "^8.2.4",
+    "firebase-tools": "^9.2.2",
+    "next": "10.0.5",
+    "next-images": "^1.6.2",
+    "node-fetch": "^2.6.1",
+    "node-sass": "^5.0.0",
+    "places.js": "^1.19.0",
+    "postcss-flexbugs-fixes": "^5.0.2",
+    "postcss-preset-env": "^6.7.0",
+    "prop-types": "^15.7.2",
+    "react": "17.0.1",
+    "react-dom": "17.0.1",
+    "react-select": "^4.0.2",
+    "uniqid": "^5.2.0"
+  },
+  "devDependencies": {
+    "babel-eslint": "^10.1.0",
+    "eslint": "^7.9.0",
+    "eslint-config-airbnb": "^18.2.0",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-jsx-a11y": "^6.3.1",
+    "eslint-plugin-react": "^7.21.0",
+    "eslint-plugin-react-hooks": "^4.1.2",
+    "sass-lint-auto-fix": "^0.21.2"
+  }
+}

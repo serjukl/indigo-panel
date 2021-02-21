@@ -1,0 +1,106 @@
+.container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  width: calc(100% - 20px);
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  padding: 20px;
+  background-color: black;
+  margin: 10px 0;
+  margin-left: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.container div {
+  width: 100%;
+}
+
+.container div .btnContainer {
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.container div .btnContainer div {
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.container div .btnContainer div button {
+  width: 100%;
+}
+
+.container .upPart {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  width: 100%;
+}
+
+.container .upPart p, .container .upPart a {
+  color: white;
+  -webkit-transition: .3s;
+  transition: .3s;
+}
+
+.container .upPart svg path {
+  -webkit-transition: .3s;
+  transition: .3s;
+}
+
+.container:hover p, .container:hover a {
+  color: #e63c3c;
+}
+
+.container:hover svg path {
+  fill: #e63c3c;
+}
+
+.downPart {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.downPart div {
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  width: 100%;
+  padding: 10px 0;
+}
+
+.downPart div a, .downPart div p {
+  color: white;
+  margin-left: 10px;
+}
+/*# sourceMappingURL=UserItem.module.css.map */

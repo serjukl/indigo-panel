@@ -1,0 +1,53 @@
+.container
+    display: flex
+    align-items: center
+    width: calc(100% - 20px)
+    justify-content: space-between
+    padding: 20px
+    background-color: black
+    margin: 10px 0
+    margin-left: 10px
+    border-radius: 5px
+    cursor: pointer
+    flex-direction: column
+    div
+        width: 100%
+        .btnContainer
+            justify-content: center
+            div
+                justify-content: center
+                button
+                    width: 100%
+    .upPart
+        display: flex
+        justify-content: space-between
+        align-items: center
+        width: 100%
+        p, a
+            color: white
+            transition: .3s
+        svg
+            path
+                transition: .3s
+    &:hover
+        p, a
+            color: #e63c3c
+        svg
+            path
+                fill: #e63c3c
+
+
+.downPart
+    display: flex
+    width: 100%
+    flex-direction: column
+    div
+        width: 100%
+        display: flex
+        justify-content: flex-start
+        align-items: center
+        width: 100%
+        padding: 10px 0
+        a, p
+            color: white
+            margin-left: 10px

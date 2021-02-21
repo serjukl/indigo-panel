@@ -1,0 +1,15 @@
+@charset "UTF-8";
+.container {
+  width: 100%;
+  margin: 20px 0;
+}
+
+.container p {
+  color: ​ #ffffff;
+  text-align: center;
+}
+
+.container p span {
+  color: #f05c5c;
+}
+/*# sourceMappingURL=FormName.module.css.map */

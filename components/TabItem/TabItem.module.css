@@ -1,0 +1,41 @@
+.TabItemContainer {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  padding: 5px 10px;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  background-color: black;
+  border-radius: 50px;
+  cursor: pointer;
+  margin: 5px;
+}
+
+.TabItemContainer p {
+  margin: 0;
+  font-size: 14px;
+  color: #f05c5c;
+}
+
+.TabItemContainer svg {
+  height: 20px;
+  width: 20px;
+  margin-left: 5px;
+}
+
+.TabItemContainer svg path {
+  fill: #f05c5c;
+}
+
+.actveClass {
+  background-color: #f05c5c;
+}
+
+.actveClass p {
+  color: black;
+}
+/*# sourceMappingURL=TabItem.module.css.map */

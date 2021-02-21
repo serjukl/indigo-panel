@@ -1,0 +1,29 @@
+.box {
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  padding: 20px 0;
+}
+
+.box button {
+  width: 200px;
+  background-color: #f05c5c;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  text-align: center;
+  -webkit-transition: .3s;
+  transition: .3s;
+  font-size: 16px;
+  padding: 10px 5px;
+  border-radius: 5px;
+}
+
+.box button:hover {
+  background-color: #e63c3c;
+}
+/*# sourceMappingURL=Button.module.css.map */

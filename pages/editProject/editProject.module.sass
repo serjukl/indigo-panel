@@ -1,0 +1,68 @@
+.editProject
+    display: flex
+    justify-content: center
+    align-items: center
+
+.container
+    display: flex
+    flex-direction: column
+    background-color: black
+    min-width: 320px
+    width: 320px
+
+.header
+    display: flex
+    justify-content: space-between
+    align-items: center
+    padding: 10px
+    cursor: pointer
+    p
+        color: white
+        transition: .3s
+    svg
+        path
+            fill: white
+            transition: .3s
+    &:hover
+        p
+            color: #f05c5c
+        svg
+            path
+                fill: #f05c5c
+
+.content
+    display: none
+
+.opened
+    display: flex
+
+.containerDown
+    display: flex
+    flex-direction: column
+    width: 100%
+
+.needWorkItem
+    color: white
+    display: flex
+    flex-direction: column
+    justify-content: space-between
+    align-items: center
+    width: 100%
+    padding: 0 10px
+    background-color: rgb(25,25,25)
+    svg
+        height: 30px
+        width: 30px
+        cursor: pointer
+        path
+            fill: white
+            transition: .3s
+        &:hover
+            path 
+                fill: #f05c5c
+
+.listItem
+    display: flex
+    justify-content: space-between
+    align-items: center
+    width: 100%
