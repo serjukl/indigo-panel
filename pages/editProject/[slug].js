@@ -12,10 +12,10 @@ const editProject = ({ newData }) => {
   const [OpenEditing, setOpenEditing] = useState(null)
   const [AbleValues] = useState(newData[0].workTypes)
   const [InputsValue] = useState({})
-  const [UsedItems] = useState([])
+  const [UsedItems] = useState(newData[0].usedItems ? newData[0].usedItems : [])
   const [SpecialNewValue] = useState({})
   const [Flag, setFlag] = useState(0)
-  const [TotalyUsedItems] = useState([])
+  const [TotalyUsedItems] = useState(newData[0].totalyUsedItems ? newData[0].totalyUsedItems : [])
   const [ShowMessage, setShowMessage] = useState(false)
   const [ProjectsArr, setProjectsArr] = useState([])
 

@@ -8,7 +8,7 @@ import Button from '../components/Button/Button'
 
 const Home = () => {
   const [ProjectsArr, setProjectsArr] = useState([])
-  const [SearchValue, setSearchValue] = useState(null)
+  const [SearchValue, setSearchValue] = useState('default')
   const [UserSearch] = useState({})
   const [Flag, setFlag] = useState(0)
   const iconLink = (
@@ -71,6 +71,11 @@ const Home = () => {
     if (SearchValue === 'clientNumber') {
       const temp = ProjectsArr.filter((prj) => prj.clientNumber === UserSearch.search)
       setProjectsArr(temp)
+    }
+    if (SearchValue === 'default') {
+      const temp = ProjectsArr.filter((prj) => prj.clientNumber === UserSearch.search)
+      setProjectsArr(temp)
+      setFlag(Flag + 1)
     }
   }
 
