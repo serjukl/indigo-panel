@@ -1,30 +1,32 @@
 import React, { useState, useEffect } from 'react'
-import Select from 'react-select'
 import uniqid from 'uniqid'
+import Select from 'react-select'
 import firebase from 'firebase/app'
 import styles from '../styles/addproject.module.sass'
-import FormLogoContainer from '../components/FormLogoContainer/FormLogoContainer'
+import {useRouter} from 'next/router'
 import FormName from '../components/FormName/FormName'
 import Input from '../components/Input_line/Input_line'
 import Button from '../components/Button/Button'
 import Tabs from '../components/Tabs/Tabs'
-import Message from '../components/Message/Message'
 import '../lib/firebase'
 import 'firebase/database'
+import Navigation from '../components/Navigation/Navigation'
 
-const addproject = () => {
+const createTask = () => {
+  const router = useRouter()
   const tabsAble = [
     'Обробка хімією', 'Висушування стін', 'Висушування підлоги',
-    'Гідроізоляція', 'Опалення', 'Вологість', 'Витяжка'
+    'Гідроізоляція', 'Опалення', 'Вологість', 'Витяжка', 'Діагностика'
   ]
   const [NewInputValue, setNewInputValue] = useState(null)
   const [CurrentUser, setCurrentUser] = useState(null)
-  const [UserPhones, setUserPhones] = useState(null)
   const [GetGeoLocation, setGetGeoLocation] = useState(null)
   const [InputsValues] = useState({})
   const [TabsValues, setTabsValues] = useState(tabsAble)
   const [ProjectsArr, setProjectsArr] = useState([])
-  const [ShowMessage, setShowMessage] = useState(false)
+  const [AllUsers, setAllUsers] = useState([])
+
+
   const geoLocations = [{
     value: 'Івано-Франківськ',
     label: 'Івано-Франківськ'
@@ -43,20 +45,27 @@ const addproject = () => {
       method: 'POST',
       body: JSON.stringify(localStorage.getItem('iea')),
       headers: {
-        'Content-Type': 'application/json'
-      },
-      cors: 'no-cors'
+        'Content-Type': 'application/json',
+        'Cross-Origin-Embedder-Policy': 'require-corp',
+        'Cross-Origin-Opener-Policy': 'same-origin'
+      }
     })
     const result = await response.json()
     setCurrentUser(result[0])
-    setUserPhones([{
-      value: result[0].Phone,
-      label: result[0].Phone
-    },
-    {
-      value: result[0]?.Phone2,
-      label: result[0]?.Phone2
-    }])
+  }
+
+  const getAllUsers = async () => {
+    const response = await fetch(`${window.location.origin}/api/getUsers`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Cross-Origin-Embedder-Policy': 'require-corp',
+        'Cross-Origin-Opener-Policy': 'same-origin'
+      }
+    })
+    const result = await response.json()
+    setAllUsers(result)
+    console.log(result)
   }
 
   const getInputValues = (e) => {
@@ -69,31 +78,38 @@ const addproject = () => {
     const newProject = {
       id: uniqid(),
       date: new Date().toISOString().slice(0, 10),
-      creatorName: CurrentUser.Name,
-      numberPhoning: NewInputValue.value,
+      creatorName: CurrentUser,
+      numberPhoning: InputsValues.userCallTo,
       clientName: InputsValues.firstName,
       clientNumber: InputsValues.number,
       city: GetGeoLocation.value,
       street: InputsValues.address,
-      workTypes: TabsValues
+      worker: NewInputValue.value ? NewInputValue.value : null,
+      workTypes: TabsValues,
+      accessToProject: [
+        CurrentUser, 
+        NewInputValue.value ? NewInputValue.value : null,
+        AllUsers.filter((user) => user.isAdmin === true)[0]
+      ]
     }
     projects.unshift(newProject)
     await firebase.database().ref('projects').set(projects)
-    setShowMessage(true)
-    setTimeout(() => {
-      setShowMessage(false)
-      window.location.reload()
-    }, 2000)
+    router.push('/')
   }
 
   useEffect(() => {
     getCreatorName()
-    // console.log(GetGeoLocation)
+    getAllUsers()
   }, [GetGeoLocation])
 
   const getProjects = async () => {
     const response = await fetch(`${window.location.origin}/api/getProjects`, {
-      method: 'GET'
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Cross-Origin-Embedder-Policy': 'require-corp',
+        'Cross-Origin-Opener-Policy': 'same-origin'
+      }
     })
     const logResult = await response.json()
     return logResult
@@ -108,41 +124,24 @@ const addproject = () => {
 
   return (
     <div className={styles.container}>
+      <Navigation />
       <form className={styles.box} onSubmit={(e) => submitAddProject(e)}>
-        <FormLogoContainer />
         <FormName
           Name={CurrentUser ? CurrentUser.Name : null}
         />
-        <Message message="message example" status={ShowMessage} activationKey={ShowMessage} />
-
-        <Select
-          value={NewInputValue}
-          onChange={(e) => handleChange(e)}
-          options={UserPhones}
-          isClearable
+        <Input
           placeholder="Номер на який дзвонили"
-          instanceId={1}
-          className={styles.selectNumber}
-          theme={(theme) => ({
-            ...theme,
-            borderColor: 'transparent',
-            colors: {
-              ...theme.colors,
-              primary: '#f05c5c',
-              primary75: 'transparent',
-              primary25: 'rgba(255,0,0,.3)',
-              neutral0: 'black',
-              neutral80: '#e63c3c'
-            }
-          })}
+          inputName="userCallTo"
+          inputType="tel"
+          changeHandler={(e) => getInputValues(e)}
         />
-
         <Input
           placeholder="Ім'я клієнта"
           inputName="firstName"
           inputType="text"
           changeHandler={(e) => getInputValues(e)}
         />
+        
         <Input
           placeholder="Номер клієнта"
           inputName="number"
@@ -178,6 +177,35 @@ const addproject = () => {
           changeHandler={(e) => getInputValues(e)}
 
         />
+
+        <Select
+          value={NewInputValue}
+          onChange={(e) => handleChange(e)}
+          options={AllUsers.map((user) => {
+            return {
+              label: `${user.Name} ${user.SecondName} ${user.workCity}`,
+              value: user
+            }
+          })}
+          isClearable
+          placeholder="Призначити задачу"
+          instanceId={2}
+          className={styles.selectNumber}
+          theme={(theme) => ({
+            ...theme,
+            borderColor: 'transparent',
+            colors: {
+              ...theme.colors,
+              primary: '#f05c5c',
+              primary75: 'transparent',
+              primary25: 'rgba(255,0,0,.3)',
+              neutral0: 'black',
+              neutral80: '#e63c3c'
+            }
+          })}
+        />
+
+
         <div className={styles.TagCloud}>
           <p>Оберіть тип робіт</p>
           <Tabs
@@ -193,4 +221,4 @@ const addproject = () => {
     </div>
   )
 }
-export default addproject
+export default createTask

@@ -35,9 +35,10 @@ const Auth = () => {
       method: 'POST',
       body: JSON.stringify(authInputsValues),
       headers: {
-        'Content-Type': 'application/json'
-      },
-      cors: 'no-cors'
+        'Content-Type': 'application/json',
+        'Cross-Origin-Embedder-Policy': 'require-corp',
+        'Cross-Origin-Opener-Policy': 'same-origin'
+      }
     })
     const logResult = await response.json()
     localStorage.setItem('iea', logResult.iea)

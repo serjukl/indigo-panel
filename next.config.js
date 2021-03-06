@@ -1,4 +1,6 @@
 const withImages = require('next-images')
+const withPWA = require('next-pwa')
+const runtimeCaching = require('next-pwa/cache')
 
 module.exports = withImages()
 module.exports = {
@@ -13,6 +15,14 @@ module.exports = {
     // MEASUREMENT_ID: 'G-DZVW88E5KY'
   }
 }
+
+module.exports = withPWA({
+  pwa: {
+    dest: 'public',
+    runtimeCaching,
+  },
+})
+
 // module.exports = {
 //   webpack: (config, { isServer }) => {
 //     if (isServer) {

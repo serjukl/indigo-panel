@@ -11,7 +11,14 @@ const getProjects = async () => {
 
 export default async (req, res) => {
   const ending = await getProjects(req)
-  const projects = ending
-  res.statusCode = 200
-  res.json(projects)
+  console.log(ending);
+  if (ending) {
+    const projects = ending
+    res.statusCode = 200
+    res.json(projects)
+  } else {
+    res.statusCode = 200
+    res.json([])
+  }
+  
 }

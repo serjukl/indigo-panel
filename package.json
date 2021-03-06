@@ -12,8 +12,8 @@
     "firebase-tools": "^9.2.2",
     "next": "10.0.5",
     "next-images": "^1.6.2",
+    "next-pwa": "^5.0.5",
     "node-fetch": "^2.6.1",
-    "node-sass": "^5.0.0",
     "places.js": "^1.19.0",
     "postcss-flexbugs-fixes": "^5.0.2",
     "postcss-preset-env": "^6.7.0",
@@ -21,6 +21,7 @@
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "react-select": "^4.0.2",
+    "sass": "^1.32.8",
     "uniqid": "^5.2.0"
   },
   "devDependencies": {
