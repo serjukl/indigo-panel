@@ -11,7 +11,6 @@ const getProjects = async () => {
 
 export default async (req, res) => {
   const ending = await getProjects(req)
-  console.log(ending);
   if (ending) {
     const projects = ending
     res.statusCode = 200
