@@ -22,9 +22,7 @@ const Home = () => {
       method: 'POST',
       body: JSON.stringify(localStorage.getItem('iea')),
       headers: {
-        'Content-Type': 'application/json',
-        'Cross-Origin-Embedder-Policy': 'require-corp',
-        'Cross-Origin-Opener-Policy': 'same-origin'
+        'Content-Type': 'application/json'
       }
     })
     const logResult = await response.json()
@@ -35,7 +33,6 @@ const Home = () => {
   }
 
   useEffect(() => {
-    console.log(navigator)
     if (localStorage.getItem('iea') === 'false'
     || localStorage.getItem('iea') === null) window.location = '/auth'
     isLogin()
@@ -43,14 +40,10 @@ const Home = () => {
 
   const getProjects = async () => {
     const response = await fetch(`${window.location.origin}/api/getProjects`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'Cross-Origin-Embedder-Policy': 'require-corp',
-        'Cross-Origin-Opener-Policy': 'same-origin'
-      }
+      method: 'GET'
     })
     const logResult = await response.json()
+    // console.log(logResult);
     return logResult
   }
 
@@ -62,6 +55,41 @@ const Home = () => {
     fetchData()
   }, [Flag])
   
+
+  function displayNotification() {
+    if (Notification.permission == 'granted') {
+      navigator.serviceWorker.getRegistration().then(function(reg) {
+        var options = {
+          body: 'Here is a notification body!',
+          icon: './icons/icon-512x512.png',
+          vibrate: [100, 50, 100],
+          data: {
+            dateOfArrival: Date.now(),
+            primaryKey: 1
+          }
+        };
+        reg.showNotification('Hello world!', options);
+      });
+    }
+  }
+
+  const testMessage = () => {
+    Notification.requestPermission(function(status) {
+      console.log('Notification permission status:', status);
+    });
+    console.log(Notification.permission);
+  }
+
+  useEffect(() => {
+    // console.log(navigator)
+    // Notification.requestPermission(function(status) {
+    //   console.log('Notification permission status:', status);
+    // });
+    displayNotification()
+    
+
+  }, [])
+
   return (
     <div>
       <Head>
@@ -69,7 +97,68 @@ const Home = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
         <Navigation />
+        <button onClick={() => testMessage()}>test</button>
         <h1>main page</h1>
+        <div className={styles.table}>
+          <div className={styles.tableHeading}>
+            <div>Номер замовлення</div>
+            <div>Дата створення</div>
+            <div>Створив замовлення</div>
+            <div>Ім'я клієнта</div>
+            <div>Виконавець</div>
+            <div>Статус</div>
+            <div></div>
+          </div>
+          {
+            ProjectsArr.map((project, key) => {
+              return (
+                <div className={styles.tableHeading} key={key}>
+                  <div>
+                    <p>
+                      { project.id }
+                    </p>
+                  </div>
+                  <div>
+                    <p>
+                      { project.date }
+                    </p>
+                  </div>
+                  <div>
+                    <p>
+                      { project.creatorName.Name }
+                    </p>
+                    <a href={`tel:${project.creatorName.Phone}`}>
+                      { project.creatorName.Phone }
+                    </a>
+                  </div>
+                  <div>
+                    <p>
+                      { project.clientName }
+                    </p>
+                    <a href={`tel:${project.clientNumber}`}>
+                      { project.clientNumber }
+                    </a>
+                  </div>
+                  <div>
+                    <p>
+                      {
+                        project.worker.Name
+                      }
+                    </p>
+                  </div>
+                  <div>Статус</div>
+                  <div>
+                    <Link href={ `/editProject/${project.id}` }>
+                      <a>
+                        Переглянути детальніше
+                      </a>
+                    </Link>
+                  </div>
+                </div>
+              )
+            })
+          }
+        </div>
       </div>
   )
 }

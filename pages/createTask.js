@@ -45,9 +45,7 @@ const createTask = () => {
       method: 'POST',
       body: JSON.stringify(localStorage.getItem('iea')),
       headers: {
-        'Content-Type': 'application/json',
-        'Cross-Origin-Embedder-Policy': 'require-corp',
-        'Cross-Origin-Opener-Policy': 'same-origin'
+        'Content-Type': 'application/json'
       }
     })
     const result = await response.json()
@@ -58,9 +56,7 @@ const createTask = () => {
     const response = await fetch(`${window.location.origin}/api/getUsers`, {
       method: 'GET',
       headers: {
-        'Content-Type': 'application/json',
-        'Cross-Origin-Embedder-Policy': 'require-corp',
-        'Cross-Origin-Opener-Policy': 'same-origin'
+        'Content-Type': 'application/json'
       }
     })
     const result = await response.json()
@@ -106,9 +102,7 @@ const createTask = () => {
     const response = await fetch(`${window.location.origin}/api/getProjects`, {
       method: 'GET',
       headers: {
-        'Content-Type': 'application/json',
-        'Cross-Origin-Embedder-Policy': 'require-corp',
-        'Cross-Origin-Opener-Policy': 'same-origin'
+        'Content-Type': 'application/json'
       }
     })
     const logResult = await response.json()

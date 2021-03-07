@@ -63,9 +63,7 @@ const createUser = () => {
         const response = await fetch(`${window.location.origin}/api/getUsers`, {
           method: 'GET',
           headers: {
-            'Content-Type': 'application/json',
-            'Cross-Origin-Embedder-Policy': 'require-corp',
-            'Cross-Origin-Opener-Policy': 'same-origin'
+            'Content-Type': 'application/json'
           }
         })
         const logResult = await response.json()
@@ -77,9 +75,7 @@ const createUser = () => {
         await fetch(`${window.location.origin}/api/getUsers`, {
           method: 'GET',
           headers: {
-            'Content-Type': 'application/json',
-            'Cross-Origin-Embedder-Policy': 'require-corp',
-            'Cross-Origin-Opener-Policy': 'same-origin'
+            'Content-Type': 'application/json'
           }
         })
         userData.push(authInputsValues)
@@ -93,9 +89,7 @@ const createUser = () => {
           method: 'POST',
           body: JSON.stringify(id),
           headers: {
-            'Content-Type': 'application/json',
-            'Cross-Origin-Embedder-Policy': 'require-corp',
-            'Cross-Origin-Opener-Policy': 'same-origin'
+            'Content-Type': 'application/json'
           }
         })
         const deleteResult = await response.json()
