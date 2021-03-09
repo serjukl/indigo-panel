@@ -11,6 +11,7 @@ const getUsersData = async (req) => {
 }
 export default async (req, res) => {
   const ending = await getUsersData(req)
+  console.log();
   res.statusCode = 200
   ending.length
     ? res.json({ iea: `${ending[0].Phone}${ending[0].Password}` })
