@@ -76,20 +76,26 @@ const Auth = () => {
 
   
 
-//   const askMessagePermission = () => {
-//     //! Вивод вопроса на доступ
-//     // Notification.requestPermission(function(status) {
-//     //   console.log('Notification permission status:', status);
-//     // });
-//     const msg = firebase.messaging()
-//     msg.requestPermission().then((permission) => {
-//       console.log(permission);
-//       return msg.getToken()
-//     }).then((data) => {
-//       console.log('token', data)
-//       SavedToken.push(data)
-//     })
-// }
+  const askMessagePermission = () => {
+    //! Вивод вопроса на доступ
+    Notification.requestPermission(function(status) {
+      console.log('Notification permission status:', status);
+      if (status === 'granted') {
+        const msg = firebase.messaging()
+        msg.requestPermission().then(() => {
+          return msg.getToken()
+        }).then((data) => {
+          console.log('token', data)
+          SavedToken.push(data)
+        })
+      } else {
+        Notification.requestPermission(function(status) {
+          console.log('Notification permission status:', status);
+        })
+      }
+    });
+    
+}
 
 
   
@@ -99,16 +105,15 @@ const Auth = () => {
 
 
 
-//   const submitSendMes = () => {
-//     setcheckInput(!checkInput)
-    
-//   }
+  const submitSendMes = () => {
+    setcheckInput(!checkInput)
+  }
 
-//   useEffect(() => {
-//     if (checkInput) {
-//       askMessagePermission()
-//     }
-//   }, [checkInput])
+  useEffect(() => {
+    if (checkInput) {
+      askMessagePermission()
+    }
+  }, [checkInput])
 
 
 
