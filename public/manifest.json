@@ -14,5 +14,7 @@
         "type": "image/png"
       }
     ],
-    "splash_pages": null
+    "splash_pages": null,
+    "gcm_sender_id": "BKHaWalYchJzD4pX28Mjv8X3gdq7C2Qc9puwBdEQ87n7ZQ2eKuCELMNzFEHK-aYPieWm91OZhY73fcK4IY4xA9c",
+    "gcm_user_visible_only": true
   }

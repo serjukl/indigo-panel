@@ -1,5 +1,8 @@
 /* eslint-disable arrow-parens */
 import React, { useState, useEffect } from 'react'
+import firebase from 'firebase/app'
+import 'firebase/messaging'
+import '../lib/firebase'
 import styles from '../styles/auth.module.sass'
 import InputLine from '../components/Input_line/Input_line'
 import ButLog from '../components/Button/Button'
@@ -9,6 +12,8 @@ import FormLogoContainer from '../components/FormLogoContainer/FormLogoContainer
 const Auth = () => {
   const [authInputsValues] = useState({})
   const [ShowMessage, setShowMessage] = useState(false)
+  const [SavedToken, setSavedToken] = useState([])
+  const [checkInput, setcheckInput] = useState(false)
   const inputsData = [
     {
       placeholder: 'Номер телефону',
@@ -57,8 +62,61 @@ const Auth = () => {
     }
   }
 
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+//   const askMessagePermission = () => {
+//     //! Вивод вопроса на доступ
+//     // Notification.requestPermission(function(status) {
+//     //   console.log('Notification permission status:', status);
+//     // });
+//     const msg = firebase.messaging()
+//     msg.requestPermission().then((permission) => {
+//       console.log(permission);
+//       return msg.getToken()
+//     }).then((data) => {
+//       console.log('token', data)
+//       SavedToken.push(data)
+//     })
+// }
+
+
+  
+
+
+
+
+
+
+//   const submitSendMes = () => {
+//     setcheckInput(!checkInput)
+    
+//   }
+
+//   useEffect(() => {
+//     if (checkInput) {
+//       askMessagePermission()
+//     }
+//   }, [checkInput])
+
+
+
+
+
   return (
     <div className={styles.container}>
+      {/* <button onClick={() => subscribe()}>test</button> */}
       <form className={styles.formContainer} onSubmit={(e) => submitLoginHandler(e)}>
         <FormLogoContainer />
         {
@@ -72,10 +130,16 @@ const Auth = () => {
             />
           ))
         }
+
+        <label>
+          Надаю згоду отримувати сповіщення
+          <input type='checkbox' checked={checkInput} onChange={() => submitSendMes()}/>
+        </label>
         <ButLog
           btnName="Увійти"
           btnType="submit"
         />
+        
         <Message message="message example" status={ShowMessage} activationKey={ShowMessage} />
       </form>
     </div>

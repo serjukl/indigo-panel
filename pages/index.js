@@ -56,39 +56,7 @@ const Home = () => {
   }, [Flag])
   
 
-  function displayNotification() {
-    if (Notification.permission == 'granted') {
-      navigator.serviceWorker.getRegistration().then(function(reg) {
-        var options = {
-          body: 'Here is a notification body!',
-          icon: './icons/icon-512x512.png',
-          vibrate: [100, 50, 100],
-          data: {
-            dateOfArrival: Date.now(),
-            primaryKey: 1
-          }
-        };
-        reg.showNotification('Hello world!', options);
-      });
-    }
-  }
-
-  const testMessage = () => {
-    Notification.requestPermission(function(status) {
-      console.log('Notification permission status:', status);
-    });
-    console.log(Notification.permission);
-  }
-
-  useEffect(() => {
-    // console.log(navigator)
-    // Notification.requestPermission(function(status) {
-    //   console.log('Notification permission status:', status);
-    // });
-    displayNotification()
-    
-
-  }, [])
+  
 
   return (
     <div>
@@ -97,7 +65,7 @@ const Home = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
         <Navigation />
-        <button onClick={() => testMessage()}>test</button>
+        
         <h1>main page</h1>
         <div className={styles.table}>
           <div className={styles.tableHeading}>
