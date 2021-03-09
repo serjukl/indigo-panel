@@ -6,6 +6,7 @@ import NavBar from '../components/NavBar/NavBar'
 import styles from '../styles/Home.module.sass'
 import Input from '../components/Input_line/Input_line'
 import Button from '../components/Button/Button'
+import StatusButton from '../components/StatusButton/StatusBatton'
 
 const Home = () => {
   const [ProjectsArr, setProjectsArr] = useState([])
@@ -114,10 +115,16 @@ const Home = () => {
                       }
                     </p>
                   </div>
-                  <div>Статус</div>
+
+                  <div>
+                    <StatusButton
+                      status='2'
+                    />
+                  </div>
+                  
                   <div>
                     <Link href={ `/editProject/${project.id}` }>
-                      <a>
+                      <a className={styles.moreDetails}>
                         Переглянути детальніше
                       </a>
                     </Link>
