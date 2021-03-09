@@ -23,7 +23,8 @@
     "react-dom": "17.0.1",
     "react-select": "^4.0.2",
     "sass": "^1.32.8",
-    "uniqid": "^5.2.0"
+    "uniqid": "^5.2.0",
+    "web-push": "^3.4.4"
   },
   "devDependencies": {
     "babel-eslint": "^10.1.0",

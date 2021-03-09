@@ -13,6 +13,8 @@
 
 // If the loader is already loaded, just stop.
 if (!self.define) {
+self.__WB_DISABLE_DEV_LOGS = true
+
   const singleRequire = name => {
     if (name !== 'require') {
       name = name + '.js';

@@ -1,7 +1,6 @@
 /* eslint-disable arrow-parens */
 import React, { useState, useEffect } from 'react'
 import firebase from 'firebase/app'
-import 'firebase/messaging'
 import 'firebase/database'
 import '../lib/firebase'
 import styles from '../styles/auth.module.sass'
@@ -10,13 +9,28 @@ import ButLog from '../components/Button/Button'
 import Message from '../components/Message/Message'
 import FormLogoContainer from '../components/FormLogoContainer/FormLogoContainer'
 
+
+const base64ToUint8Array = base64 => {
+  const padding = '='.repeat((4 - (base64.length % 4)) % 4)
+  const b64 = (base64 + padding).replace(/-/g, '+').replace(/_/g, '/')
+
+  const rawData = window.atob(b64)
+  const outputArray = new Uint8Array(rawData.length)
+
+  for (let i = 0; i < rawData.length; ++i) {
+    outputArray[i] = rawData.charCodeAt(i)
+  }
+  return outputArray
+}
+
+
 const Auth = () => {
-  
-  const VAPID = 'BKHaWalYchJzD4pX28Mjv8X3gdq7C2Qc9puwBdEQ87n7ZQ2eKuCELMNzFEHK-aYPieWm91OZhY73fcK4IY4xA9c'
+  const [isSubscribed, setIsSubscribed] = useState(false)
+  const [subscription, setSubscription] = useState(null)
+  const [registration, setRegistration] = useState(null)
 
   const [authInputsValues] = useState({})
   const [ShowMessage, setShowMessage] = useState(false)
-  const [SavedToken, setSavedToken] = useState([])
   const [checkInput, setcheckInput] = useState(false)
   const inputsData = [
     {
@@ -77,34 +91,23 @@ const Auth = () => {
 
   
 
-//   const askMessagePermission = () => {
-//     //! Вивод вопроса на доступ
-//     Notification.requestPermission(function(status) {
-//       console.log('Notification permission status:', status);
-//       // if (status === 'granted') {
-//       //   const msg = firebase.messaging()
-//       //   msg.requestPermission().then(() => {
-//       //     return msg.getToken()
-//       //   }).then((data) => {
-//       //     console.log('token', data)
-//       //     SavedToken.push(data)
-//       //   })
-//       // } else {
-//       //   Notification.requestPermission(function(status) {
-//       //     console.log('Notification permission status:', status);
-//       //   })
-//       // }
-//     });
-    
-// }
+  const askMessagePermission = () => {
+    //! Вивод вопроса на доступ
 
-
-  
-
-
-
-
-
+    if (typeof window !== 'undefined' && 'serviceWorker' in navigator) {
+      navigator.serviceWorker.ready.then(reg => {
+        console.log(reg, 'reg');
+        reg.pushManager.getSubscription().then(sub => {
+          console.log(sub, 'sub');
+          if (sub && !(sub.expirationTime && Date.now() > sub.expirationTime - 5 * 60 * 1000)) {
+            setSubscription(sub)
+            setIsSubscribed(true)
+          }
+        })
+        setRegistration(reg)
+      })
+    }
+}
 
   // const submitSendMes = () => {
   //   setcheckInput(!checkInput)
@@ -117,43 +120,68 @@ const Auth = () => {
   // }, [checkInput])
 
 
-const sendTokenToDB = async (currentToken) => {
-  const arr = []
-  arr.push(currentToken)
-  await firebase.database().ref('userTokens').set(arr)
-}
-
-const getUserMessageToken = () => {
-  const messaging = firebase.messaging()
-
-  messaging.getToken({ vapidKey: VAPID }).then((currentToken) => {
-    if (currentToken) {
-      console.log(currentToken);
-      sendTokenToDB(currentToken)
-      // Send the token to your server and update the UI if necessary
-      // ...
-    } else {
-      // Show permission request UI
-      console.log('No registration token available. Request permission to generate one.');
-      // ...
-    }
-  }).catch((err) => {
-    console.log('An error occurred while retrieving token. ', err);
-    // ...
-  });
-}
-
 
 useEffect(() => {
-  getUserMessageToken()
+  askMessagePermission()
 }, [])
 
 
+const subscribeButtonOnClick = async event => {
+  event.preventDefault()
+  const sub = await registration.pushManager.subscribe({
+    userVisibleOnly: true,
+    applicationServerKey: base64ToUint8Array(process.env.NEXT_PUBLIC_WEB_PUSH_PUBLIC_KEY)
+  })
+  // TODO: you should call your API to save subscription data on server in order to send web push notification from server
+  setSubscription(sub)
+  setIsSubscribed(true)
+  console.log('web push subscribed!')
+  console.log(sub)
+}
+
+
+const unsubscribeButtonOnClick = async event => {
+  event.preventDefault()
+  await subscription.unsubscribe()
+  // TODO: you should call your API to delete or invalidate subscription data on server
+  setSubscription(null)
+  setIsSubscribed(false)
+  console.log('web push unsubscribed!')
+}
+
+
+const sendNotificationButtonOnClick = async event => {
+  event.preventDefault()
+  if (subscription == null) {
+    console.error('web push not subscribed')
+    return
+  }
+
+  const response = await fetch('/api/notification', {
+    method: 'POST',
+    headers: {
+      'Content-type': 'application/json',
+      mode: 'no-cors'
+    },
+    body: JSON.stringify({
+      subscription
+    })
+  })
+  console.log(response);
+}
 
 
   return (
     <div className={styles.container}>
-      {/* <button onClick={() => subscribe()}>test</button> */}
+      <button onClick={subscribeButtonOnClick} disabled={isSubscribed}>
+        Subscribe
+      </button>
+      <button onClick={unsubscribeButtonOnClick} disabled={!isSubscribed}>
+        Unsubscribe
+      </button>
+      <button onClick={sendNotificationButtonOnClick} disabled={!isSubscribed}>
+        Send Notification
+      </button>
       <form className={styles.formContainer} onSubmit={(e) => submitLoginHandler(e)}>
         <FormLogoContainer />
         {
