@@ -2,10 +2,7 @@ import Head from 'next/head'
 import Navigation from '../components/Navigation/Navigation'
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
-import NavBar from '../components/NavBar/NavBar'
 import styles from '../styles/Home.module.sass'
-import Input from '../components/Input_line/Input_line'
-import Button from '../components/Button/Button'
 import StatusButton from '../components/StatusButton/StatusBatton'
 
 const Home = () => {
@@ -44,7 +41,7 @@ const Home = () => {
       method: 'GET'
     })
     const logResult = await response.json()
-    // console.log(logResult);
+    console.log(logResult);
     return logResult
   }
 
@@ -56,9 +53,6 @@ const Home = () => {
     fetchData()
   }, [Flag])
   
-
-  
-
   return (
     <div>
       <Head>
@@ -66,8 +60,6 @@ const Home = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
         <Navigation />
-        
-        <h1>main page</h1>
         <div className={styles.table}>
           <div className={styles.tableHeading}>
             <div>Номер замовлення</div>
@@ -81,7 +73,7 @@ const Home = () => {
           {
             ProjectsArr.map((project, key) => {
               return (
-                <div className={styles.tableHeading} key={key}>
+                <div className={styles.tableBody} key={key}>
                   <div>
                     <p>
                       { project.id }
@@ -114,18 +106,21 @@ const Home = () => {
                         project.worker.Name
                       }
                     </p>
+                    <a href={`tel:${project.worker.Phone}`}>
+                      { project.worker.Phone }
+                    </a>
                   </div>
 
                   <div>
                     <StatusButton
-                      status='2'
+                      status={project.status}
                     />
                   </div>
                   
-                  <div>
+                  <div className={styles.moreDetails}>
                     <Link href={ `/editProject/${project.id}` }>
-                      <a className={styles.moreDetails}>
-                        Переглянути детальніше
+                      <a>
+                        Переглянути
                       </a>
                     </Link>
                   </div>

@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react'
 import firebase from 'firebase/app'
 import 'firebase/messaging'
+import 'firebase/database'
 import '../lib/firebase'
 import styles from '../styles/auth.module.sass'
 import InputLine from '../components/Input_line/Input_line'
@@ -10,6 +11,9 @@ import Message from '../components/Message/Message'
 import FormLogoContainer from '../components/FormLogoContainer/FormLogoContainer'
 
 const Auth = () => {
+  
+  const VAPID = 'BKHaWalYchJzD4pX28Mjv8X3gdq7C2Qc9puwBdEQ87n7ZQ2eKuCELMNzFEHK-aYPieWm91OZhY73fcK4IY4xA9c'
+
   const [authInputsValues] = useState({})
   const [ShowMessage, setShowMessage] = useState(false)
   const [SavedToken, setSavedToken] = useState([])
@@ -30,9 +34,6 @@ const Auth = () => {
     authInputsValues[e.target.name] = e.target.value
   }
 
-  useEffect(() => {
-    console.log(window.location)
-  }, [])
 
   const submitLoginHandler = async e => {
     e.preventDefault()
@@ -76,26 +77,26 @@ const Auth = () => {
 
   
 
-  const askMessagePermission = () => {
-    //! Вивод вопроса на доступ
-    Notification.requestPermission(function(status) {
-      console.log('Notification permission status:', status);
-      if (status === 'granted') {
-        const msg = firebase.messaging()
-        msg.requestPermission().then(() => {
-          return msg.getToken()
-        }).then((data) => {
-          console.log('token', data)
-          SavedToken.push(data)
-        })
-      } else {
-        Notification.requestPermission(function(status) {
-          console.log('Notification permission status:', status);
-        })
-      }
-    });
+//   const askMessagePermission = () => {
+//     //! Вивод вопроса на доступ
+//     Notification.requestPermission(function(status) {
+//       console.log('Notification permission status:', status);
+//       // if (status === 'granted') {
+//       //   const msg = firebase.messaging()
+//       //   msg.requestPermission().then(() => {
+//       //     return msg.getToken()
+//       //   }).then((data) => {
+//       //     console.log('token', data)
+//       //     SavedToken.push(data)
+//       //   })
+//       // } else {
+//       //   Notification.requestPermission(function(status) {
+//       //     console.log('Notification permission status:', status);
+//       //   })
+//       // }
+//     });
     
-}
+// }
 
 
   
@@ -105,16 +106,47 @@ const Auth = () => {
 
 
 
-  const submitSendMes = () => {
-    setcheckInput(!checkInput)
-  }
+  // const submitSendMes = () => {
+  //   setcheckInput(!checkInput)
+  // }
 
-  useEffect(() => {
-    if (checkInput) {
-      askMessagePermission()
+  // useEffect(() => {
+  //   if (checkInput) {
+  //     askMessagePermission()
+  //   }
+  // }, [checkInput])
+
+
+const sendTokenToDB = async (currentToken) => {
+  const arr = []
+  arr.push(currentToken)
+  await firebase.database().ref('userTokens').set(arr)
+}
+
+const getUserMessageToken = () => {
+  const messaging = firebase.messaging()
+
+  messaging.getToken({ vapidKey: VAPID }).then((currentToken) => {
+    if (currentToken) {
+      console.log(currentToken);
+      sendTokenToDB(currentToken)
+      // Send the token to your server and update the UI if necessary
+      // ...
+    } else {
+      // Show permission request UI
+      console.log('No registration token available. Request permission to generate one.');
+      // ...
     }
-  }, [checkInput])
+  }).catch((err) => {
+    console.log('An error occurred while retrieving token. ', err);
+    // ...
+  });
+}
 
+
+useEffect(() => {
+  getUserMessageToken()
+}, [])
 
 
 
