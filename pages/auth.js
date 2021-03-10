@@ -121,6 +121,7 @@ const Auth = () => {
 
       const swRegistration = await registerServiceWorker();
       console.log(`%c ${swRegistration} реєстрація sw`, 'color:green');
+      console.log(swRegistration);
 
       const permission = await requestNotificationPermission();
       console.log(`%c ${permission} дозвіл від користувача`, 'color:green');
@@ -129,31 +130,6 @@ const Auth = () => {
       console.log(`%c Вивести повідомлення`, 'color:green');
 
   }
-
-//   const askMessagePermission = () => {
-//     if (check()) {
-//       navigator.serviceWorker.ready.then(reg => {
-//         reg.pushManager.getSubscription().then(sub => {
-//           if (sub && !(sub.expirationTime && Date.now() > sub.expirationTime - 5 * 60 * 1000)) {
-//             setSubscription(sub)
-//             setIsSubscribed(true)
-//           }
-//         })
-//         setRegistration(reg)
-//       })
-//     }
-// }
-
-  // const submitSendMes = () => {
-  //   setcheckInput(!checkInput)
-  // }
-
-  // useEffect(() => {
-  //   if (checkInput) {
-  //     askMessagePermission()
-  //   }
-  // }, [checkInput])
-
 
 
 useEffect(async () => {
@@ -164,63 +140,32 @@ useEffect(async () => {
   startProcess()
 }, [])
 
-
-const subscribeButtonOnClick = async event => {
-  event.preventDefault()
-  const sub = await registration.pushManager.subscribe({
-    userVisibleOnly: true,
-    applicationServerKey: base64ToUint8Array(process.env.NEXT_PUBLIC_WEB_PUSH_PUBLIC_KEY)
-  })
-  // TODO: you should call your API to save subscription data on server in order to send web push notification from server
-  setSubscription(sub)
-  setIsSubscribed(true)
-  console.log('web push subscribed!')
-  console.log(sub)
+const test = async () => {
+  const response = await fetch('https://admin-panel-fce34-default-rtdb.firebaseio.com/userTokens.json')
+    .then((resp) => resp.text())
+    .then((users) => JSON.parse(users))
+    sendMessage(response[0])
+  console.log(response);
 }
 
-
-const unsubscribeButtonOnClick = async event => {
-  event.preventDefault()
-  await subscription.unsubscribe()
-  // TODO: you should call your API to delete or invalidate subscription data on server
-  setSubscription(null)
-  setIsSubscribed(false)
-  console.log('web push unsubscribed!')
-}
-
-
-const sendNotificationButtonOnClick = async event => {
-  event.preventDefault()
-  if (subscription == null) {
-    console.error('web push not subscribed')
-    return
-  }
-
+const sendMessage = async (userSubscription) => {
   const response = await fetch('/api/notification', {
     method: 'POST',
     headers: {
-      'Content-type': 'application/json',
-      mode: 'no-cors'
+      'Content-Type': 'application/json',
     },
-    body: JSON.stringify({
-      subscription
-    })
+    body: JSON.stringify(userSubscription),
   })
-  console.log(response);
+  return response.json()
 }
 
 
   return (
     <div className={styles.container}>
-      <button onClick={subscribeButtonOnClick} disabled={isSubscribed}>
+      <button onClick={() => test()} disabled={isSubscribed}>
         Subscribe
       </button>
-      <button onClick={unsubscribeButtonOnClick} disabled={!isSubscribed}>
-        Unsubscribe
-      </button>
-      <button onClick={sendNotificationButtonOnClick} disabled={!isSubscribed}>
-        Send Notification
-      </button>
+      
       <form className={styles.formContainer} onSubmit={(e) => submitLoginHandler(e)}>
         <FormLogoContainer />
         {

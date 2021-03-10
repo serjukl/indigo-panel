@@ -1,4 +1,7 @@
 const webpush = require('web-push')
+import firebase from 'firebase/app'
+import 'firebase/database'
+import '../../lib/firebase'
 
 const vapidKeys = {
   publicKey:
@@ -17,9 +20,16 @@ const sendNotification = (subscription, dataToSend='') => {
   webpush.sendNotification(subscription, dataToSend)
 }
 
+const saveUserToken = (token) => {
+  const x = []
+  x.push(token)
+  firebase.database().ref('userTokens').set(x)
+}
+
 export default (req, res) => {
   if (req.method == 'POST') {
     console.log(req.body);
+    saveUserToken(req.body)
     res.status(200)
     sendNotification(req.body, 'Hello serj')
     res.json({ message: 'success' })
