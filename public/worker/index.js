@@ -33,13 +33,11 @@ const urlB64ToUint8Array = base64String => {
       'BDc-xNUb9YTWW862xzFwTghLKeRiZ8wAIjZhvH4MKqnBpJbQccJ9FZw7ue2HFH_X-eC5n-dXiJgfjXmB1dXG-bQ'
     )
     const options = { applicationServerKey, userVisibleOnly: true }
-    const subscription = await self.registration.pushManager.subscribe(options)
+    await self.registration.pushManager.subscribe(options)
       .then((pushSubscription) => {
-        console.log(pushSubscription)
         const response = saveSubscription(pushSubscription)
         return response
       })
-      console.log(subscription)
   })
 
 

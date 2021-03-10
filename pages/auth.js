@@ -135,8 +135,8 @@ const Auth = () => {
       const permission = await requestNotificationPermission();
       console.log(`%c ${permission} дозвіл від користувача`, 'color:green');
 
-      showLocalNotification('This is title', 'this is the message', swRegistration);
-      console.log(`%c Вивести повідомлення`, 'color:green');
+      // showLocalNotification('This is title', 'this is the message', swRegistration);
+      // console.log(`%c Вивести повідомлення`, 'color:green');
 
   }
 
