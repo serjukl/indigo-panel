@@ -114,15 +114,18 @@ const Auth = () => {
     swRegistration.showNotification(title, options);
   }
 
+  const removeService = () => {
+    navigator.serviceWorker.getRegistrations()
+      .then(function(registrations) {
+        for(let registration of registrations) {
+          registration.unregister();
+        }
+      });
+  }
 
   const main = async () => {
       check()
-  //     navigator.serviceWorker.getRegistrations()
-  // .then(function(registrations) {
-  //   for(let registration of registrations) {
-  //     registration.unregister();
-  //   }
-  // });
+
       console.log('%c Доступний браузеру', 'color:green');
 
       const swRegistration = await registerServiceWorker();
@@ -171,7 +174,9 @@ const sendMessage = async (userSubscription) => {
       <button onClick={() => test()} disabled={isSubscribed}>
         Subscribe
       </button>
-      
+      <button onClick={() => removeService()}>
+        remove SW
+      </button>
       <form className={styles.formContainer} onSubmit={(e) => submitLoginHandler(e)}>
         <FormLogoContainer />
         {
