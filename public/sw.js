@@ -100,10 +100,10 @@ define("./sw.js",['./workbox-d6d90c3a'], function (workbox) { 'use strict';
   importScripts();
   self.skipWaiting();
   workbox.clientsClaim();
-  workbox.registerRoute(/.*/i, new workbox.NetworkOnly({
-    "cacheName": "dev",
-    plugins: []
-  }), 'GET');
+  // workbox.registerRoute(/.*/i, new workbox.NetworkOnly({
+  //   "cacheName": "dev",
+  //   plugins: []
+  // }), 'GET');
 
 });
 

@@ -1,29 +1,28 @@
-const webPush = require('web-push')
+const webpush = require('web-push')
 
-webPush.setVapidDetails(
-  `mailto:${process.env.WEB_PUSH_EMAIL}`,
-  process.env.NEXT_PUBLIC_WEB_PUSH_PUBLIC_KEY,
-  process.env.WEB_PUSH_PRIVATE_KEY
+const vapidKeys = {
+  publicKey:
+    'BDc-xNUb9YTWW862xzFwTghLKeRiZ8wAIjZhvH4MKqnBpJbQccJ9FZw7ue2HFH_X-eC5n-dXiJgfjXmB1dXG-bQ',
+  privateKey: '9NU39qqoiR6FjUsPs7cPGYx8F3HHEoldaJ4PzaHwuhM',
+}
+
+webpush.setVapidDetails(
+  'mailto:serjukl98@gmail.com',
+  vapidKeys.publicKey,
+  vapidKeys.privateKey
 )
+
+//function to send the notification to the subscribed device
+const sendNotification = (subscription, dataToSend='') => {
+  webpush.sendNotification(subscription, dataToSend)
+}
 
 export default (req, res) => {
   if (req.method == 'POST') {
-    const { subscription } = req.body
-    webPush
-      .sendNotification(subscription, JSON.stringify({title: 'Hello Web Push', message: 'Your web push notification is here!'}))
-      .then(response => {
-        res.writeHead(response.statusCode, response.headers).end(response.body)
-      })
-      .catch(err => {
-        if ('statusCode' in err) {
-          res.writeHead(err.statusCode, err.headers).end(err.body)
-        } else {
-          console.error(err)
-          res.statusCode = 500
-          res.end()
-        }
-      })
-     
+    console.log(req.body);
+    res.status(200)
+    sendNotification(req.body, 'Hello serj')
+    res.json({ message: 'success' })
   } else {
     res.status(500)
     res.end()

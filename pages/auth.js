@@ -80,34 +80,69 @@ const Auth = () => {
 
 
 
-
-
-
-
-
-
-
-  
-
-  
-
-  const askMessagePermission = () => {
-    //! Вивод вопроса на доступ
-
-    if (typeof window !== 'undefined' && 'serviceWorker' in navigator) {
-      navigator.serviceWorker.ready.then(reg => {
-        console.log(reg, 'reg');
-        reg.pushManager.getSubscription().then(sub => {
-          console.log(sub, 'sub');
-          if (sub && !(sub.expirationTime && Date.now() > sub.expirationTime - 5 * 60 * 1000)) {
-            setSubscription(sub)
-            setIsSubscribed(true)
-          }
-        })
-        setRegistration(reg)
-      })
+  const check = () => {
+    if (!('serviceWorker' in navigator)) {
+      throw new Error('No Service Worker support!')
     }
-}
+    if (!('PushManager' in window)) {
+      throw new Error('No Push API Support!')
+    }
+    return true
+  }
+
+
+  const registerServiceWorker = async () => {
+    const swRegistration = await navigator.serviceWorker.register('/worker/index.js'); //notice the file name
+    return swRegistration;
+  }
+
+  
+  const requestNotificationPermission = async () => {
+    const permission = await window.Notification.requestPermission();
+    if(permission !== 'granted'){
+        throw new Error('Permission not granted for Notification');
+    }
+    return permission
+  }
+
+
+  const showLocalNotification = (title, body, swRegistration) => {
+    const options = {
+        body,
+        // here you can add more properties like icon, image, vibrate, etc.
+    };
+    swRegistration.showNotification(title, options);
+  }
+
+
+  const main = async () => {
+      check()
+      console.log('%c Доступний браузеру', 'color:green');
+
+      const swRegistration = await registerServiceWorker();
+      console.log(`%c ${swRegistration} реєстрація sw`, 'color:green');
+
+      const permission = await requestNotificationPermission();
+      console.log(`%c ${permission} дозвіл від користувача`, 'color:green');
+
+      showLocalNotification('This is title', 'this is the message', swRegistration);
+      console.log(`%c Вивести повідомлення`, 'color:green');
+
+  }
+
+//   const askMessagePermission = () => {
+//     if (check()) {
+//       navigator.serviceWorker.ready.then(reg => {
+//         reg.pushManager.getSubscription().then(sub => {
+//           if (sub && !(sub.expirationTime && Date.now() > sub.expirationTime - 5 * 60 * 1000)) {
+//             setSubscription(sub)
+//             setIsSubscribed(true)
+//           }
+//         })
+//         setRegistration(reg)
+//       })
+//     }
+// }
 
   // const submitSendMes = () => {
   //   setcheckInput(!checkInput)
@@ -121,8 +156,12 @@ const Auth = () => {
 
 
 
-useEffect(() => {
-  askMessagePermission()
+useEffect(async () => {
+  // askMessagePermission()
+  async function startProcess(){
+    await main()
+  }
+  startProcess()
 }, [])
 
 
