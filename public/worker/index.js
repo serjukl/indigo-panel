@@ -1,3 +1,4 @@
+
 const urlB64ToUint8Array = base64String => {
     const padding = '='.repeat((4 - (base64String.length % 4)) % 4)
     const base64 = (base64String + padding).replace(/\-/g, '+').replace(/_/g, '/')
@@ -12,7 +13,7 @@ const urlB64ToUint8Array = base64String => {
   
   // saveSubscription saves the subscription to the backend
   const saveSubscription = async subscription => {
-    const response = await fetch('/api/notification', {
+    const response = await fetch('/api/saveToken', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

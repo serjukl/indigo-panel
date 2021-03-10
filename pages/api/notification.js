@@ -1,5 +1,4 @@
 const webpush = require('web-push')
-import {setToDB} from '../../middleware/setToDB'
 
 const vapidKeys = {
   publicKey:
@@ -22,8 +21,6 @@ const sendNotification = (subscription, dataToSend='') => {
 
 export default (req, res) => {
   if (req.method == 'POST') {
-    console.log(req.body);
-    setToDB(req.body)
     res.status(200)
     sendNotification(req.body, 'Hello serj')
     res.json({ message: 'success' })
