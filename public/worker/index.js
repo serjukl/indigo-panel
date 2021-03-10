@@ -28,18 +28,14 @@ const urlB64ToUint8Array = base64String => {
   self.addEventListener('activate', async () => {
     // This will be called only once when the service worker is activated.
     console.log('service worker activate')
-    try {
-      const applicationServerKey = urlB64ToUint8Array(
-        'BDc-xNUb9YTWW862xzFwTghLKeRiZ8wAIjZhvH4MKqnBpJbQccJ9FZw7ue2HFH_X-eC5n-dXiJgfjXmB1dXG-bQ'
-      )
-      const options = { applicationServerKey, userVisibleOnly: true }
-      const subscription = await self.registration.pushManager.subscribe(options)
-      console.log(subscription)
-      const response = await saveSubscription(subscription)
-      console.log(response)
-    } catch (err) {
-      console.log('Error', err)
-    }
+    const applicationServerKey = urlB64ToUint8Array(
+      'BDc-xNUb9YTWW862xzFwTghLKeRiZ8wAIjZhvH4MKqnBpJbQccJ9FZw7ue2HFH_X-eC5n-dXiJgfjXmB1dXG-bQ'
+    )
+    const options = { applicationServerKey, userVisibleOnly: true }
+    const subscription = await self.registration.pushManager.subscribe(options)
+    console.log(subscription)
+    const response = await saveSubscription(subscription)
+    console.log(response)
   })
 
 
