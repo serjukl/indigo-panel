@@ -34,7 +34,7 @@ const urlB64ToUint8Array = base64String => {
       )
       const options = { applicationServerKey, userVisibleOnly: true }
       const subscription = await self.registration.pushManager.subscribe(options)
-      console.log(JSON.stringify(subscription))
+      console.log(subscription)
       const response = await saveSubscription(subscription)
       console.log(response)
     } catch (err) {
