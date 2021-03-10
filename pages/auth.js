@@ -141,20 +141,11 @@ const Auth = () => {
   }
 
 
-useEffect(async () => {
-  // askMessagePermission()
-  async function startProcess(){
-    await main()
-  }
-  startProcess()
-}, [])
-
 const test = async () => {
   const response = await fetch('https://admin-panel-fce34-default-rtdb.firebaseio.com/userTokens.json')
     .then((resp) => resp.text())
     .then((users) => JSON.parse(users))
     sendMessage(response[0])
-  console.log(response);
 }
 
 const sendMessage = async (userSubscription) => {
@@ -171,6 +162,9 @@ const sendMessage = async (userSubscription) => {
 
   return (
     <div className={styles.container}>
+      <button onClick={() => main()}>
+        start
+      </button>
       <button onClick={() => test()} disabled={isSubscribed}>
         Subscribe
       </button>

@@ -17,12 +17,10 @@ const sendNotification = (subscription, dataToSend='') => {
   webpush.sendNotification(subscription, dataToSend)
 }
 
-
-
 export default (req, res) => {
   if (req.method == 'POST') {
-    res.status(200)
     sendNotification(req.body, 'Hello serj')
+    res.status(200)
     res.json({ message: 'success' })
   } else {
     res.status(500)
