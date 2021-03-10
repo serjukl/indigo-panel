@@ -117,6 +117,12 @@ const Auth = () => {
 
   const main = async () => {
       check()
+  //     navigator.serviceWorker.getRegistrations()
+  // .then(function(registrations) {
+  //   for(let registration of registrations) {
+  //     registration.unregister();
+  //   }
+  // });
       console.log('%c Доступний браузеру', 'color:green');
 
       const swRegistration = await registerServiceWorker();
